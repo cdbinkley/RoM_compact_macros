@@ -1,0 +1,416 @@
+<!--
+v0.6
+
+Frames:
+1) a useless button
+2) cast time on cast bar (based on pbInfo by p.b. (a.k.a. novayuna) and Bother)
+   released under the Creative Commons License By-Nc-Sa: http://creativecommons.org/licenses/by-nc-sa/3.0/
+	
+-->
+
+<Ui xmlns="http://www.runewaker.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.runewaker.com//ui.xsd">
+
+  <Frame name = "CompactMacrosFrame" frameStrata="DIALOG">  <!-- frameStrata="MEDIUM" parent="UIParent"> -->
+      <Size>
+        <AbsDimension x="100" y="100"/>
+      </Size>
+      
+      
+      
+      <Frames>
+      
+        <!-- makes a button, otherwise useless -->
+        <Button name="CompactMacrosButton" hidden="true" inherits="UIPanelButtonTemplate" text="button">
+          <Size>
+            <AbsDimension x="50" y="50" />
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMRIGHT" relativeTo="ChatFrame1" relativePoint="TOPRIGHT">
+              <Offset>
+                <AbsDimension x="10" y="-10"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Button>
+        
+        <!--
+        <Ui xmlns="http://www.runewaker.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.runewaker.com/ ../../../worldxml/ui.xsd">
+    <Script file="ZZLibrary.lua" />
+    <Frame name="ZZLibrary_Frame" hidden="true">
+        <Scripts>
+            <OnLoad>
+                ZZLibrary.ReregisterEvents()
+            </OnLoad>
+            <OnUpdate>
+                ZZLibrary.OnUpdate(this, elapsedTime)
+            </OnUpdate>
+            <OnEvent>
+                ZZLibrary.OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+            </OnEvent>
+        </Scripts>
+    </Frame>
+</Ui>
+-->
+
+        <!--
+        <Frame name="CM_ExtendedActionBarFrame" hidden="false" inherits="ActionBarFrameTemplate" parent="UIParent" id="5">
+          
+          <Anchors>
+            <Anchor point="RIGHT" relativePoint="LEFT" relativeTo="RightActionBarFrame">
+              <Offset>
+                <AbsDimension x="0" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+          
+        </Frame>
+        -->
+        
+        
+
+        
+        <StatusBar name="CM_FocusCastingBar" hidden="true">
+        
+          <Size>
+            <AbsDimension x="228" y="14"/>
+          </Size>
+          
+          <!--
+          <Anchors>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="ChatFrame1" relativePoint="BOTTOMLEFT">
+                <Offset>
+                  <AbsDimension x="0" y="-8"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+          </Anchors>
+          -->
+          <Layers>
+
+            <Layer level="ARTWORK"> 
+              <FontString name="CM_FocusCastingBarName" inherits="GameFontYellow">
+                <Size>
+                  <AbsDimension x="208" y="14" />
+                </Size>
+                <!--
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="FocusFrame" relativePoint="BOTTOMLEFT">
+                    <Offset>
+                      <AbsDimension x="0" y="-8"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+                -->
+              </FontString>
+              <!--
+              <FontString name="CM_FocusCastingBarTime" inherits="GameFontYellow">
+                <Size>
+                  <AbsDimension x="104" y="14" />
+                </Size>
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="FocusFrame" relativePoint="BOTTOMLEFT">
+                    <Offset>
+                      <AbsDimension x="0" y="-4"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+              -->
+            </Layer>
+            <Layer level="OVERLAY">
+              <Texture name="CM_FocusCastingBarSpark" file="Interface/AddOns/CompactMacros/Textures/CastingBar-Spark.tga" alphaMode="ADD">
+                <Size>
+                  <AbsDimension x="28" y="28"/>
+                </Size>
+                <!--
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="FocusFrame" relativePoint="BOTTOMLEFT">
+                    <Offset>
+                      <AbsDimension x="0" y="-8"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+                -->
+              </Texture>
+            </Layer>
+            
+          </Layers>
+          
+          <!--
+          				<Frames>
+					<Frame name="$parentBorder">
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture file="interface\TargetFrame\Targetcasting-Border">
+									<Size>
+										<AbsDimension x="128" y="32"/>
+									</Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset>
+												<AbsDimension x="-2" y="-1"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+					</Frame>
+          
+				</Frames>
+        -->
+        
+          <Frames>
+            <Frame name="$parentBorder"> <!--CM_FocusCastingBarBorder">-->
+              <Layers>
+                <Layer level="BACKGROUND">
+                  <Texture file="Interface/AddOns/CompactMacros/Textures/Targetcasting-Border.tga">
+                    <Size>
+                      <AbsDimension x="252" y="32"/>
+                    </Size>
+                    <Anchors>
+                      <Anchor point="TOPLEFT">
+                        <Offset>
+                          <AbsDimension x="-2" y="-1"/>
+                        </Offset>
+                      </Anchor>
+                    </Anchors>
+                  </Texture>
+                </Layer>
+              </Layers>
+            </Frame>
+          </Frames>
+        
+          <Scripts>
+            <OnLoad>
+              this:RegisterEvent("UNIT_CASTINGTIME")
+            </OnLoad>
+            <OnEvent>
+              CM_FocusCastingBar_OnEvent(this, event)
+            </OnEvent>
+            <OnUpdate>
+              CM_FocusCastingBar_OnUpdate(this, elapsedTime)
+            </OnUpdate>
+          </Scripts>
+          
+          <BarTexture file="Interface/AddOns/CompactMacros/Textures/BarFill.tga"/>
+        </StatusBar>
+        
+        <!-- cast time over cast bar -->
+        <Frame name="CM_CastingBar_Display" hidden="true">
+          <Layers>
+            <Layer>
+            
+              <FontString name="CM_CastingBarTime" inherits="GameFontLabelYellow">
+                <Size>
+                  <AbsDimension x="180" y="16"/>
+                </Size>
+                <Anchors>
+                  <Anchor point="TOP" relativeTo="CastingBarFrame" relativePoint="TOP">
+                    <Offset>
+                      <AbsDimension x="0" y="-2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+              
+              <FontString name="CM_CastingBarText" inherits="GameFontLabelYellow">
+                <Size>
+                  <AbsDimension x="300" y="16"/>
+                </Size>
+                <Anchors>
+                  <Anchor point="TOP" relativeTo="CastingBarFrame" relativePoint="TOP">
+                    <Offset>
+                      <AbsDimension x="0" y="-20"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+              
+            </Layer>
+          </Layers>
+          
+          <Scripts>
+          
+            <OnLoad>
+              this:RegisterEvent("CASTING_START");
+              this:RegisterEvent("CASTING_STOP");
+              this:RegisterEvent("CASTING_FAILED");
+              this:RegisterEvent("CASTING_DELAYED");
+            </OnLoad>
+            
+            <OnEvent>
+              if ( event == "CASTING_START" ) then
+                CastingBarText:Hide();
+                CM_CastingBarText:SetText(arg1);
+                CompactMacros.TimeStart = GetTime();
+                CompactMacros.TimeNeed = arg2;
+                this:Show();
+              elseif ( event == "CASTING_STOP" and this:IsVisible() ) then
+                this:Hide();
+              elseif ( event == "CASTING_FAILED" and this:IsVisible() ) then
+                this:Hide();
+              elseif ( event == "CASTING_DELAYED" and this:IsVisible() ) then
+                CompactMacros.TimeNeed = CompactMacros.TimeNeed + arg1;
+              end;
+            </OnEvent>
+            
+            <OnUpdate>
+              local ElapsedTime = CompactMacros.TimeNeed - (GetTime() - CompactMacros.TimeStart);
+              if (0 > ElapsedTime) then
+                ElapsedTime = 0;
+              end;
+              CM_CastingBarTime:SetText(string.format("%.1f",ElapsedTime).." sec");
+            </OnUpdate>
+            
+          </Scripts>
+          
+        </Frame>
+        
+        <!--
+        <Frame name="CM_MonsterHealth" hidden="false">
+          <Scripts>
+            <OnUpdate>
+              if ( TargetFrame:IsVisible() ) then
+                MonsterHealthOnUpdate();
+              end;
+            </OnUpdate>
+          </Scripts>
+        </Frame>
+        -->
+        
+        <Frame name="CM_PetActionBarFrame" parent="UIParent" hidden="true" frameStrata="LOW">
+          <Size>
+            <AbsDimension x="230" y="44"/>
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeTo="LeftActionBarFrame">
+              <Offset>
+                <AbsDimension x="114" y="2"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+
+          <Backdrop edgeFile="Interface\Tooltips\Tooltip-border" bgFile="Interface\Tooltips\Tooltip-Background">
+            <BackgroundInsets>
+              <AbsInset top="4" left="4" bottom="4" right="4"/>
+            </BackgroundInsets>
+            <!--
+            <EdgeSize>
+              <AbsValue val="16"/>
+            </EdgeSize>
+            <TileSize>
+              <AbsValue val="16"/>
+            </TileSize>
+            -->
+          </Backdrop>
+
+          <Frames>
+            <!--
+            <Button name="CM_PetActionMoveButton" inherits="TitlebarSwitchButtonTemp">
+              <Anchors>
+                <Anchor point="TOPLEFT">
+                  <Offset>
+                    <AbsDimension x="0" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </Button>
+            -->
+            <CheckButton name="CM_PetActionBarButton1" inherits="PetActionButtonTemplate" id="1">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="2" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </CheckButton>
+            <CheckButton name="CM_PetActionBarButton2" inherits="PetActionButtonTemplate" id="2">
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="CM_PetActionBarButton1" relativePoint="RIGHT">
+                  <Offset>
+                    <AbsDimension x="2" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </CheckButton>
+            <CheckButton name="CM_PetActionBarButton3" inherits="PetActionButtonTemplate" id="3">
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="CM_PetActionBarButton2" relativePoint="RIGHT">
+                  <Offset>
+                    <AbsDimension x="2" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </CheckButton>
+            <CheckButton name="CM_PetActionBarButton4" inherits="PetActionButtonTemplate" id="4">
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="CM_PetActionBarButton3" relativePoint="RIGHT">
+                  <Offset>
+                    <AbsDimension x="2" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </CheckButton>
+            <CheckButton name="CM_PetActionBarButton5" inherits="PetActionButtonTemplate" id="5">
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="CM_PetActionBarButton4" relativePoint="RIGHT">
+                  <Offset>
+                    <AbsDimension x="2" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </CheckButton>
+            <CheckButton name="CM_PetActionBarButton6" inherits="PetActionButtonTemplate" id="6">
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="CM_PetActionBarButton5" relativePoint="RIGHT">
+                  <Offset>
+                    <AbsDimension x="2" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </CheckButton>
+
+          </Frames>
+
+          <Scripts>
+            <OnLoad>
+              this:RegisterEvent("PET_ACTIONBAR_SHOW")
+              this:RegisterEvent("PET_ACTIONBAR_HIDE")
+              this:RegisterEvent("PET_ACTIONBAR_UPDATE")
+              <!--CM_PetActionBarFrame_OnLoad(this)-->
+            </OnLoad>
+            <OnShow>
+              CM_PetActionBarFrame_OnShow(this)
+            </OnShow>
+            <OnEvent>
+              CM_PetActionBarFrame_OnEvent(this, event)
+            </OnEvent>
+          </Scripts>
+
+        </Frame>	
+  
+        
+      </Frames>
+
+    <Scripts>
+      <OnEvent>
+        CompactMacros.EventHappened(event)
+      </OnEvent>
+      <!--
+      <OnUpdate>
+        local ElapsedTime = CompactMacros.AttackTimeNeed - (GetTime() - CompactMacros.AttackTimeStart)
+        if (0 > ElapsedTime) then
+          threeseconds()
+          ElapsedTime = 0
+        end
+        CM_CastingBarTime:SetText(string.format("%.1f",ElapsedTime).." sec")
+      </OnUpdate>
+      -->
+    </Scripts>
+    
+  </Frame>
+</Ui>
+

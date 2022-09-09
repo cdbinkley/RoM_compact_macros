@@ -1,0 +1,8 @@
+## Title: CompactMacros
+## Version: 0.9
+## Notes: Alias commands to make macros shorter.
+## Author: illagong
+
+CompactMacros.xml
+CompactMacros.lua
+CompactBosses.lua
